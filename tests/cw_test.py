@@ -32,6 +32,7 @@ class TestE2E(unittest.TestCase):
               freeable_memory_threshold    = "64000000"
               free_storage_space_threshold = "20000000000"
               swap_usage_threshold         = "1024000000"
+              db_connections_threshold     = "100"
               naming_suffix                = "notprod"
             }
         """
@@ -57,6 +58,9 @@ class TestE2E(unittest.TestCase):
 
     def test_rds_alarms_swap_usage_too_high(self):
         self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.swap_usage_too_high"]["threshold"], "1024000000")
+
+    def test_rds_alarms_database_connections_too_high(self):
+        self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.database_connections_too_high"]["threshold"], "100")    
 
 if __name__ == '__main__':
     unittest.main()

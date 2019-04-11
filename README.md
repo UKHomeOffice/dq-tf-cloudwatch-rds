@@ -30,3 +30,4 @@ module "cloudwatch_alarms_rds" {
 | freeable_memory_threshold | False | The minimum amount of available random access memory in Byte. |
 | free_storage_space_threshold | False | The minimum amount of available storage space in Byte |
 | swap_usage_threshold | False | The maximum amount of swap space used on the DB instance in Byte. |
+| db_connections_threshold | False | The maximum number of database connections at any given time. | 
