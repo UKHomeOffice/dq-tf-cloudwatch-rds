@@ -1,6 +1,6 @@
 variable "naming_suffix" {
   description = "Environment name passed in from parent module"
-  default = "notprod"
+  default     = "notprod"
 }
 
 variable "db_instance_id" {
