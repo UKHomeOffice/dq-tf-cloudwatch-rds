@@ -49,3 +49,9 @@ variable "swap_usage_threshold" {
 
   # 1024 Megabyte in Byte
 }
+
+variable "db_connections_threshold" {
+  description = "The maximum number of database connections at any given time."
+  type        = "string"
+  default     = 100
+}

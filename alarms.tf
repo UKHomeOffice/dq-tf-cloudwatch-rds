@@ -8,11 +8,12 @@ locals {
     FreeableMemoryThreshold   = "${max(var.freeable_memory_threshold, 0)}"
     FreeStorageSpaceThreshold = "${max(var.free_storage_space_threshold, 0)}"
     SwapUsageThreshold        = "${max(var.swap_usage_threshold, 0)}"
+    DatabaseConnections       = "${max(var.db_connections_threshold, 0)}"
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "burst_balance_too_low" {
-  alarm_name          = "burst_balance_too_low"
+  alarm_name          = "${var.db_instance_id}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "BurstBalance"
@@ -30,7 +31,7 @@ resource "aws_cloudwatch_metric_alarm" "burst_balance_too_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
-  alarm_name          = "cpu_utilization_too_high"
+  alarm_name          = "${var.db_instance_id}"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -48,7 +49,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
-  alarm_name          = "disk_queue_depth_too_high"
+  alarm_name          = "${var.db_instance_id}"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "DiskQueueDepth"
@@ -66,7 +67,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
-  alarm_name          = "freeable_memory_too_low"
+  alarm_name          = "${var.db_instance_id}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeableMemory"
@@ -84,7 +85,7 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
-  alarm_name          = "free_storage_space_threshold"
+  alarm_name          = "${var.db_instance_id}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeStorageSpace"
@@ -102,7 +103,7 @@ resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "swap_usage_too_high" {
-  alarm_name          = "swap_usage_too_high"
+  alarm_name          = "${var.db_instance_id}"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "SwapUsage"
@@ -111,6 +112,24 @@ resource "aws_cloudwatch_metric_alarm" "swap_usage_too_high" {
   statistic           = "Average"
   threshold           = "${local.thresholds["SwapUsageThreshold"]}"
   alarm_description   = "Average database swap usage over last 10 minutes too high, performance may suffer"
+  alarm_actions       = ["${aws_sns_topic.default.arn}"]
+  ok_actions          = ["${aws_sns_topic.default.arn}"]
+
+  dimensions {
+    DBInstanceIdentifier = "${var.db_instance_id}"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "database_connections_too_high" {
+  alarm_name          = "${var.db_instance_id}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "DatabaseConnections"
+  namespace           = "AWS/RDS"
+  period              = "600"
+  statistic           = "Average"
+  threshold           = "${local.thresholds["DatabaseConnections"]}"
+  alarm_description   = "Average database connection count over last 10 minutes too high."
   alarm_actions       = ["${aws_sns_topic.default.arn}"]
   ok_actions          = ["${aws_sns_topic.default.arn}"]
 
