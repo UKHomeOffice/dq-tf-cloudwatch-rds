@@ -28,7 +28,6 @@ class TestE2E(unittest.TestCase):
               db_instance_id               = "1234"
               burst_balance_threshold      = "20"
               cpu_utilization_threshold    = "80"
-              cpu_credit_balance_threshold = "20"
               disk_queue_depth_threshold   = "64"
               freeable_memory_threshold    = "64000000"
               free_storage_space_threshold = "20000000000"
@@ -46,9 +45,6 @@ class TestE2E(unittest.TestCase):
 
     def test_rds_alarms_cpu_utilization_too_high(self):
         self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.cpu_utilization_too_high"]["threshold"], "80")
-
-    def test_rds_alarms_cpu_credit_balance_too_low(self):
-        self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.cpu_credit_balance_too_low"]["threshold"], "20")
 
     def test_rds_alarms_disk_queue_depth_too_high(self):
         self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.disk_queue_depth_too_high"]["threshold"], "64")
