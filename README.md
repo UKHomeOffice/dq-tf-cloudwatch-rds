@@ -26,7 +26,7 @@ module "cloudwatch_alarms_rds" {
 | db_instance_id | __True__ | RDS instance ID |
 | burst_balance_threshold | False | The minimum percent of General Purpose SSD (gp2) burst-bucket I/O credits available |
 | cpu_utilization_threshold | False | The maximum percentage of CPU utilisation. |
-| disk_queue_depth_threshold | True | The maximum number of outstanding IOs (read/write requests) waiting to access the disk. |
+| disk_queue_depth_threshold | False | The maximum number of outstanding IOs (read/write requests) waiting to access the disk. |
 | freeable_memory_threshold | False | The minimum amount of available random access memory in Byte. |
 | free_storage_space_threshold | False | The minimum amount of available storage space in Byte |
 | swap_usage_threshold | False | The maximum amount of swap space used on the DB instance in Byte. |
