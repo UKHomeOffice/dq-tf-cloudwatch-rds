@@ -1,5 +1,6 @@
 locals {
   naming_suffix = "cloudwatch-${var.naming_suffix}"
+
   thresholds = {
     BurstBalanceThreshold     = "${min(max(var.burst_balance_threshold, 0), 100)}"
     CPUUtilizationThreshold   = "${min(max(var.cpu_utilization_threshold, 0), 100)}"
