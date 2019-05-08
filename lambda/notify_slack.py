@@ -40,8 +40,6 @@ def lambda_handler(event, context):
 def send_message_to_slack(text):
     """
     Formats the text and posts to a specific Slack web app's URL
-    Returns:
-    Slack API repsonse
     """
     try:
         post = {
@@ -71,7 +69,7 @@ def send_message_to_slack(text):
             response = ssm.get_parameter(Name=ssm_param_name, WithDecryption=True)
         except ClientError as e:
             if e.response['Error']['Code'] == 'ParameterNotFound':
-                LOGGER.info('Slack SSM parameter %s not found. No notification sent', ssm_param_name)
+                LOGGER.info("Slack SSM parameter %s not found. No notification sent", ssm_param_name)
                 return
             else:
                 LOGGER.error("Unexpected error when attempting to get Slack webhook URL: %s", e)
@@ -84,14 +82,15 @@ def send_message_to_slack(text):
                 url,
                 data = json_data.encode('utf-8'),
                 headers = {'Content-Type': 'application/json'})
-            LOGGER.info('Sending notification to Slack')
+            LOGGER.info("Sending notification to Slack")
             response = urllib.request.urlopen(req)
+            LOGGER.info("HTTP status code received from Slack API: %s", response.getcode())
         else:
-            LOGGER.info('Value for Slack SSM parameter %s not found. No notification sent', ssm_param_name)
+            LOGGER.info("Value for Slack SSM parameter %s not found. No notification sent", ssm_param_name)
             return
 
     except Exception as err:
         LOGGER.error(
-            'The following error has occurred on line: %s',
+            "The following error has occurred on line: %s",
             sys.exc_info()[2].tb_lineno)
         LOGGER.error(str(err))
