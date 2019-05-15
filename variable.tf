@@ -1,17 +1,9 @@
+variable "namespace" {}
+variable "naming_suffix" {}
+variable "pipeline_name" {}
+
 variable "path_module" {
   default = "unset"
-}
-
-locals {
-  naming_suffix = "${var.db_instance_id}-${var.naming_suffix}"
-  path_module   = "${var.path_module != "unset" ? var.path_module : path.module}"
-}
-
-#########################
-
-variable "naming_suffix" {
-  description = "Environment name passed in from parent module"
-  default     = "notprod"
 }
 
 variable "db_instance_id" {

@@ -8,8 +8,7 @@ resource "aws_lambda_function" "lambda_slack" {
   filename         = "${path.module}/lambda/lambda.zip"
   function_name    = "${var.db_instance_id}-${var.namespace}-lambda-slack"
   role             = "${aws_iam_role.lambda_role_slack.arn}"
-  handler          = "slack.lambda_handler"
-### ^wat dis
+  handler          = "function.lambda_handler"
   source_code_hash = "${data.archive_file.lambda_slack_zip.output_base64sha256}"
   runtime          = "python3.7"
   timeout          = "60"
@@ -89,8 +88,8 @@ resource "aws_iam_policy" "lambda_logging_policy_slack" {
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "${aws_cloudwatch_log_group.lambda_log_group_trigger.arn}",
-        "${aws_cloudwatch_log_group.lambda_log_group_trigger.arn}/*"
+        "${aws_cloudwatch_log_group.lambda_log_group_slack.arn}",
+        "${aws_cloudwatch_log_group.lambda_log_group_slack.arn}/*"
       ],
       "Effect": "Allow"
     }
