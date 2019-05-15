@@ -66,12 +66,12 @@ def send_message_to_slack(text):
 
         try:
             response = ssm.get_parameter(Name=ssm_param_name, WithDecryption=True)
-        except ClientError as e:
-            if e.response['Error']['Code'] == 'ParameterNotFound':
+        except ClientError as err:
+            if err.response['Error']['Code'] == 'ParameterNotFound':
                 LOGGER.info("Slack SSM parameter %s not found. No notification sent", ssm_param_name)
                 return
             else:
-                LOGGER.error("Unexpected error when attempting to get Slack webhook URL: %s", e)
+                LOGGER.error("Unexpected error when attempting to get Slack webhook URL: %s", err)
                 return
 
         if 'Value' in response['Parameter']:

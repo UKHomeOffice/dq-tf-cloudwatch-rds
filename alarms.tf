@@ -1,5 +1,6 @@
 locals {
-  naming_suffix = "cloudwatch-${var.naming_suffix}"
+  naming_suffix = "${var.db_instance_id}-${var.naming_suffix}"
+  path_module   = "${var.path_module != "unset" ? var.path_module : path.module}"
 
   thresholds = {
     BurstBalanceThreshold     = "${min(max(var.burst_balance_threshold, 0), 100)}"

@@ -13,9 +13,7 @@ class TestE2E(unittest.TestCase):
               skip_credentials_validation = true
               skip_get_ec2_platforms = true
               skip_requesting_account_id = true
-              skip_get_ec2_platforms = true
               skip_metadata_api_check = true
-              skip_region_validation = true
             }
 
             module "rds_alarms" {
@@ -34,6 +32,8 @@ class TestE2E(unittest.TestCase):
               swap_usage_threshold         = "1024000000"
               db_connections_threshold     = "100"
               naming_suffix                = "notprod"
+              namespace                    = "notprod"
+              pipeline_name                = "foo"
             }
         """
         self.result = Runner(self.snippet).result
@@ -60,7 +60,7 @@ class TestE2E(unittest.TestCase):
         self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.swap_usage_too_high"]["threshold"], "1024000000")
 
     def test_rds_alarms_database_connections_too_high(self):
-        self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.database_connections_too_high"]["threshold"], "100")    
+        self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.database_connections_too_high"]["threshold"], "100")
 
 if __name__ == '__main__':
     unittest.main()
