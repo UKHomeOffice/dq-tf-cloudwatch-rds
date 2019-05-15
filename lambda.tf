@@ -1,9 +1,3 @@
-data "archive_file" "lambda_slack_zip" {
-  type        = "zip"
-  source_dir  = "${local.path_module}/lambda"
-  output_path = "${local.path_module}/lambda/lambda.zip"
-}
-
 resource "aws_lambda_function" "lambda_slack" {
   filename         = "${path.module}/lambda/lambda.zip"
   function_name    = "${var.db_instance_id}-${var.namespace}-lambda-slack"
