@@ -60,3 +60,9 @@ data "aws_iam_policy_document" "sns_topic_policy" {
     }
   }
 }
+
+data "archive_file" "lambda_slack_zip" {
+  type        = "zip"
+  source_dir  = "${local.path_module}/lambda"
+  output_path = "${local.path_module}/lambda/lambda.zip"
+}
