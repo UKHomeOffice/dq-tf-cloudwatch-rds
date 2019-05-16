@@ -24,7 +24,7 @@ class TestE2E(unittest.TestCase):
               }
 
               naming_suffix                = "apps"
-              namespace                    = "notprod"
+              environment                  = "notprod"
               pipeline_name                = "foo"
               db_instance_id               = "1234"
               burst_balance_threshold      = "20"
