@@ -13,7 +13,7 @@ Cloudwatch module for RDS monitoring using the following components:
 ```
 module "cloudwatch_alarms_rds" {
   source         = "github.com/UKHomeOffice/dq-tf-cloudwatch-rds"
-  namespace      = "notprod"
+  environment    = "notprod"
   naming_suffix  = "${local.naming_suffix}"
   db_instance_id = "${aws_db_instance.rds.id}"
   pipeline_name  = "foobar"
@@ -24,7 +24,7 @@ module "cloudwatch_alarms_rds" {
 
 | Variable name | Required | Description |
 | :---: | :---: | :---: |
-| namespace | __True__ | Environment name |
+| environment | __True__ | Environment name |
 | naming_suffix | __True__ | Tag naming variable |
 | db_instance_id | __True__ | RDS instance ID |
 | pipeline_name | __True__ | Tag name |

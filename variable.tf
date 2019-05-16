@@ -1,4 +1,4 @@
-variable "namespace" {}
+variable "environment" {}
 variable "naming_suffix" {}
 variable "pipeline_name" {}
 
