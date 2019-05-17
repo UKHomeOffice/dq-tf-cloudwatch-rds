@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "lambda_slack" {
   filename         = "${path.module}/lambda/lambda.zip"
-  function_name    = "${var.db_instance_id}-${var.environment}-lambda-slack"
+  function_name    = "${var.db_instance_id}-lambda-slack-${var.environment}"
   role             = "${aws_iam_role.lambda_role_slack.arn}"
   handler          = "function.lambda_handler"
   source_code_hash = "${data.archive_file.lambda_slack_zip.output_base64sha256}"
@@ -13,7 +13,7 @@ resource "aws_lambda_function" "lambda_slack" {
 }
 
 resource "aws_iam_role_policy" "lambda_policy_slack" {
-  name = "${var.db_instance_id}-${var.environment}-lambda-policy-slack"
+  name = "${var.db_instance_id}-lambda-policy-slack-${var.environment}"
   role = "${aws_iam_role.lambda_role_slack.id}"
 
   policy = <<EOF
@@ -35,7 +35,7 @@ EOF
 }
 
 resource "aws_iam_role" "lambda_role_slack" {
-  name = "${var.db_instance_id}-${var.environment}-lambda-role-slack"
+  name = "${var.db_instance_id}-lambda-role-slack-${var.environment}"
 
   assume_role_policy = <<EOF
 {
@@ -68,7 +68,7 @@ resource "aws_cloudwatch_log_group" "lambda_log_group_slack" {
 }
 
 resource "aws_iam_policy" "lambda_logging_policy_slack" {
-  name        = "${var.pipeline_name}-${var.environment}-lambda-logging-policy-slack"
+  name        = "${var.pipeline_name}-lambda-logging-policy-slack-${var.environment}"
   path        = "/"
   description = "IAM policy for logging from a lambda"
 
