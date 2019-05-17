@@ -10,6 +10,8 @@ resource "aws_lambda_function" "lambda_slack" {
   tags = {
     Name = "lambda-slack-${local.naming_suffix}"
   }
+
+  depends_on = ["aws_iam_role.lambda_role_slack"]
 }
 
 resource "aws_iam_role_policy" "lambda_policy_slack" {
@@ -32,6 +34,8 @@ resource "aws_iam_role_policy" "lambda_policy_slack" {
   ]
 }
 EOF
+
+  depends_on = ["aws_iam_role.lambda_role_slack"]
 }
 
 resource "aws_iam_role" "lambda_role_slack" {
