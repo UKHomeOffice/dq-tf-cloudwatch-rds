@@ -45,8 +45,6 @@ EOF
 }
 
 resource "aws_iam_role" "lambda_role_slack" {
-  name = "${var.db_instance_id}-lambda-role-slack-${var.environment}"
-
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -62,10 +60,6 @@ resource "aws_iam_role" "lambda_role_slack" {
   ]
 }
 EOF
-
-  tags = {
-    Name = "iam-lambda-slack-${local.naming_suffix}"
-  }
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log_group_slack" {
