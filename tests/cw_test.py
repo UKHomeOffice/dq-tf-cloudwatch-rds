@@ -80,9 +80,6 @@ class TestE2E(unittest.TestCase):
     def test_lambda_iam_policy_name(self):
         self.assertEqual(self.result['rds_alarms']["aws_iam_role_policy.lambda_policy_slack"]["name"], "1234-lambda-policy-slack-notprod")
 
-    def test_lambda_iam_role_tag(self):
-        self.assertEqual(self.result['rds_alarms']["aws_iam_role.lambda_role_slack"]["tags.Name"], "iam-lambda-slack-1234-apps")
-
     def test_cw_log_groups(self):
         self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_log_group.lambda_log_group_slack"]["tags.Name"], "lambda-log-group-slack-1234-apps")
 
