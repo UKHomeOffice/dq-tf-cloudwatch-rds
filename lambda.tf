@@ -60,6 +60,10 @@ resource "aws_iam_role" "lambda_role_slack" {
   ]
 }
 EOF
+
+  tags = {
+    Name = "iam-lambda-slack-${local.naming_suffix}"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log_group_slack" {
