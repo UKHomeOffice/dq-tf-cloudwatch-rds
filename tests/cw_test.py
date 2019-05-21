@@ -75,7 +75,7 @@ class TestE2E(unittest.TestCase):
         self.assertEqual(self.result['rds_alarms']["aws_lambda_function.lambda_slack"]["tags.Name"], "lambda-slack-1234-apps")
 
     def test_lambda_slack_function_name(self):
-        self.assertEqual(self.result['rds_alarms']["aws_lambda_function.lambda_slack"]["function_name"], "1234-lambda-slack-notprod")
+        self.assertEqual(self.result['rds_alarms']["aws_lambda_function.lambda_slack"]["function_name"], "foo-lambda-slack-notprod")
 
     def test_lambda_iam_policy_name(self):
         self.assertEqual(self.result['rds_alarms']["aws_iam_role_policy.lambda_policy_slack"]["name"], "1234-lambda-policy-slack-notprod")
