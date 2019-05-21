@@ -6,7 +6,7 @@ data "archive_file" "lambda_slack_zip" {
 
 resource "aws_lambda_function" "lambda_slack" {
   filename         = "${path.module}/lambda/lambda.zip"
-  function_name    = "${var.db_instance_id}-lambda-slack-${var.environment}"
+  function_name    = "${var.pipeline_name}-lambda-slack-${var.environment}"
   role             = "${aws_iam_role.lambda_role_slack.arn}"
   handler          = "function.lambda_handler"
   source_code_hash = "${data.archive_file.lambda_slack_zip.output_base64sha256}"
