@@ -84,7 +84,7 @@ class TestE2E(unittest.TestCase):
         self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.database_connections_too_high"]["alarm_name"], "foo-database-connections-too-high")
 
     def test_lambda_slack_handler(self):
-        self.assertEqual(self.result['rds_alarms']["aws_lambda_function.lambda_slack"]["handler"], "function.lambda_handler")
+        self.assertEqual(self.result['rds_alarms']["aws_lambda_function.lambda_slack"]["handler"], "slack.lambda_handler")
 
     def test_lambda_slack_runtime(self):
         self.assertEqual(self.result['rds_alarms']["aws_lambda_function.lambda_slack"]["runtime"], "python3.7")

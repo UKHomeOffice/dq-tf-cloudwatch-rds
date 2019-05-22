@@ -1,14 +1,14 @@
 data "archive_file" "lambda_slack_zip" {
   type        = "zip"
-  source_dir  = "${local.path_module}/lambda"
-  output_path = "${local.path_module}/lambda/lambda.zip"
+  source_dir  = "${local.path_module}/lambda/slack"
+  output_path = "${local.path_module}/lambda/slack/package/lambda.zip"
 }
 
 resource "aws_lambda_function" "lambda_slack" {
-  filename         = "${path.module}/lambda/lambda.zip"
+  filename         = "${path.module}/lambda/slack/package/lambda.zip"
   function_name    = "${var.pipeline_name}-lambda-slack-${var.environment}"
   role             = "${aws_iam_role.lambda_role_slack.arn}"
-  handler          = "function.lambda_handler"
+  handler          = "slack.lambda_handler"
   source_code_hash = "${data.archive_file.lambda_slack_zip.output_base64sha256}"
   runtime          = "python3.7"
   timeout          = "60"
