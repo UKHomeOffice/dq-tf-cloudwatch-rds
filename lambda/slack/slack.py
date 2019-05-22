@@ -28,7 +28,7 @@ def lambda_handler(event, context):
     """
     LOGGER.info("Received SNS Event: " + "\n" + "%s", event)
     message = event['Records'][0]['Sns']['Message']
-    json_message = json.dumps(message)
+    json_message = json.loads(message)
     alarm_check = json_message.get('NewStateValue')
     alarm_name = json_message.get('AlarmName')
     alarm_desc = json_message.get('AlarmDescription')
