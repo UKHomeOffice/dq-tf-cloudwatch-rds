@@ -110,5 +110,8 @@ class TestE2E(unittest.TestCase):
     def test_iam_policy_logging(self):
         self.assertEqual(self.result['rds_alarms']["aws_iam_policy.lambda_logging_policy_slack"]["name"], "foo-lambda-logging-policy-slack-notprod")
 
+    def test_sns_subscirption_protocol(self):
+        self.assertEqual(self.result['rds_alarms']["aws_sns_topic_subscription.sns_to_lambda"]["protocol"], "lambda")
+
 if __name__ == '__main__':
     unittest.main()
