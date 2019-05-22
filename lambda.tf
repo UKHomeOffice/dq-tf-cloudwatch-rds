@@ -14,14 +14,14 @@ resource "aws_lambda_function" "lambda_slack" {
   timeout          = "60"
 
   tags = {
-    Name = "lambda-slack-${local.naming_suffix}"
+    Name = "lambda-slack-${var.pipeline_name}-${var.environment}"
   }
 
   depends_on = ["aws_iam_role.lambda_role_slack"]
 }
 
 resource "aws_iam_role_policy" "lambda_policy_slack" {
-  name = "${var.db_instance_id}-lambda-policy-slack-${var.environment}"
+  name = "${var.pipeline_name}-lambda-policy-slack-${var.environment}"
   role = "${aws_iam_role.lambda_role_slack.id}"
 
   policy = <<EOF
