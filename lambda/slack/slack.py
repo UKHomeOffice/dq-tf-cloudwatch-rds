@@ -1,3 +1,7 @@
+"""
+Receives a message from SNS and send a notification to Slack
+"""
+
 import json
 import logging
 import sys
@@ -24,7 +28,7 @@ def lambda_handler(event, context):
     """
     LOGGER.info("Received SNS Event: " + "\n" + "%s", event)
     message = event['Records'][0]['Sns']['Message']
-    json_message = json.loads(message)
+    json_message = json.dumps(message)
     alarm_check = json_message.get('NewStateValue')
     alarm_name = json_message.get('AlarmName')
     alarm_desc = json_message.get('AlarmDescription')
@@ -79,8 +83,8 @@ def send_message_to_slack(text):
             json_data = json.dumps(post)
             req = urllib.request.Request(
                 url,
-                data = json_data.encode('utf-8'),
-                headers = {'Content-Type': 'application/json'})
+                data=json_data.encode('utf-8'),
+                headers={'Content-Type': 'application/json'})
             LOGGER.info("Sending notification to Slack")
             response = urllib.request.urlopen(req)
             LOGGER.info("HTTP status code received from Slack API: %s", response.getcode())
