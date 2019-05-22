@@ -4,6 +4,14 @@ data "archive_file" "lambda_slack_zip" {
   output_path = "${local.path_module}/lambda/slack/package/lambda.zip"
 }
 
+resource "aws_lambda_permission" "with_sns" {
+  statement_id  = "AllowExecutionFromSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = "${aws_lambda_function.lambda_slack.function_name}"
+  principal     = "sns.amazonaws.com"
+  source_arn    = "${aws_sns_topic.default.arn}"
+}
+
 resource "aws_lambda_function" "lambda_slack" {
   filename         = "${path.module}/lambda/slack/package/lambda.zip"
   function_name    = "${var.pipeline_name}-lambda-slack-${var.environment}"

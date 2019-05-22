@@ -1,4 +1,6 @@
-resource "aws_sns_topic" "default" {}
+resource "aws_sns_topic" "default" {
+  name = "${var.pipeline_name}"
+}
 
 resource "aws_db_event_subscription" "default" {
   sns_topic = "${aws_sns_topic.default.arn}"
