@@ -3,7 +3,7 @@ variable "naming_suffix" {}
 variable "pipeline_name" {}
 
 variable "swap_alarm" {
-  description = "Switch to turn off Swap monitoring (required for MSSQL). Accepted values are 'no' to turn off and 'yes' to excplicitly turn on"
+  description = "Switch to turn off Swap monitoring (required for MSSQL). Accepted values are 'false' to turn off and 'true' to excplicitly turn on"
   default     = "true"
 }
 
