@@ -2,6 +2,11 @@ variable "environment" {}
 variable "naming_suffix" {}
 variable "pipeline_name" {}
 
+variable "swap_alarm" {
+  description = "Switch to turn off Swap monitoring (required for MSSQL). Accepted values are 'no' to turn off and 'yes' to excplicitly turn on"
+  default     = "true"
+}
+
 variable "path_module" {
   default = "unset"
 }
@@ -57,4 +62,20 @@ variable "db_connections_threshold" {
   description = "The maximum number of database connections at any given time."
   type        = "string"
   default     = 100
+}
+
+variable "read_latency_threshold" {
+  description = "The average amount of time taken per disk I/O operation."
+  type        = "string"
+  default     = 0.01
+
+  # 20 miliseconds in seconds
+}
+
+variable "write_latency_threshold" {
+  description = "The average amount of time taken per disk I/O operation."
+  type        = "string"
+  default     = 1
+
+  # 1000 miliseconds in seconds
 }

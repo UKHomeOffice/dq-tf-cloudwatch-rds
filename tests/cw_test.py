@@ -27,6 +27,7 @@ class TestE2E(unittest.TestCase):
               environment                  = "notprod"
               pipeline_name                = "foo"
               db_instance_id               = "1234"
+              swap_alarm                   = "true"
               burst_balance_threshold      = "20"
               cpu_utilization_threshold    = "80"
               disk_queue_depth_threshold   = "64"
@@ -34,6 +35,8 @@ class TestE2E(unittest.TestCase):
               free_storage_space_threshold = "20000000000"
               swap_usage_threshold         = "1024000000"
               db_connections_threshold     = "100"
+              read_latency_threshold       = "0.01"
+              write_latency_threshold      = "1"
             }
         """
         self.result = Runner(self.snippet).result
@@ -82,6 +85,18 @@ class TestE2E(unittest.TestCase):
 
     def test_rds_alarms_database_connections_too_high_name(self):
         self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.database_connections_too_high"]["alarm_name"], "foo-database-connections-too-high")
+
+    def test_rds_alarms_write_latency_too_high(self):
+        self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.write_latency_too_high"]["threshold"], "1")
+
+    def test_rds_alarms_write_latency_too_high_name(self):
+        self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.write_latency_too_high"]["alarm_name"], "foo-write-latency-too-high")
+
+    def test_rds_alarms_read_latency_too_high(self):
+        self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.read_latency_too_high"]["threshold"], "0.01")
+
+    def test_rds_alarms_read_latency_too_high_name(self):
+        self.assertEqual(self.result['rds_alarms']["aws_cloudwatch_metric_alarm.read_latency_too_high"]["alarm_name"], "foo-read-latency-too-high")
 
     def test_lambda_slack_handler(self):
         self.assertEqual(self.result['rds_alarms']["aws_lambda_function.lambda_slack"]["handler"], "slack.lambda_handler")
