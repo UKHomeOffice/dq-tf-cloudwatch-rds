@@ -10,6 +10,8 @@ locals {
     FreeStorageSpaceThreshold = "${max(var.free_storage_space_threshold, 0)}"
     SwapUsageThreshold        = "${max(var.swap_usage_threshold, 0)}"
     DatabaseConnections       = "${max(var.db_connections_threshold, 0)}"
+    WriteLatency              = "${max(var.write_latency_threshold, 0)}"
+    ReadLatency               = "${max(var.read_latency_threshold, 0)}"
   }
 }
 
@@ -104,6 +106,7 @@ resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "swap_usage_too_high" {
+  count               = "${var.swap_alarm == "true" ? "1" : "0"}"
   alarm_name          = "${var.pipeline_name}-swap-usage-too-high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
@@ -131,6 +134,42 @@ resource "aws_cloudwatch_metric_alarm" "database_connections_too_high" {
   statistic           = "Average"
   threshold           = "${local.thresholds["DatabaseConnections"]}"
   alarm_description   = "Average database connection count over last 10 minutes too high."
+  alarm_actions       = ["${aws_sns_topic.default.arn}"]
+  ok_actions          = ["${aws_sns_topic.default.arn}"]
+
+  dimensions {
+    DBInstanceIdentifier = "${var.db_instance_id}"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "read_latency_too_high" {
+  alarm_name          = "${var.pipeline_name}-read-latency-too-high"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "ReadLatency"
+  namespace           = "AWS/RDS"
+  period              = "600"
+  statistic           = "Average"
+  threshold           = "${local.thresholds["ReadLatency"]}"
+  alarm_description   = "The average amount of time taken per disk I/O operation."
+  alarm_actions       = ["${aws_sns_topic.default.arn}"]
+  ok_actions          = ["${aws_sns_topic.default.arn}"]
+
+  dimensions {
+    DBInstanceIdentifier = "${var.db_instance_id}"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "write_latency_too_high" {
+  alarm_name          = "${var.pipeline_name}-write-latency-too-high"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "WriteLatency"
+  namespace           = "AWS/RDS"
+  period              = "600"
+  statistic           = "Average"
+  threshold           = "${local.thresholds["WriteLatency"]}"
+  alarm_description   = "The average amount of time taken per disk I/O operation."
   alarm_actions       = ["${aws_sns_topic.default.arn}"]
   ok_actions          = ["${aws_sns_topic.default.arn}"]
 
