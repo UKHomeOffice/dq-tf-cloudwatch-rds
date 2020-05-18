@@ -1,6 +1,8 @@
-data "aws_region" "current" {}
+data "aws_region" "current" {
+}
 
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {
+}
 
 data "aws_iam_policy_document" "sns_topic_policy" {
   policy_id = "__default_policy_ID"
@@ -21,7 +23,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
     ]
 
     effect    = "Allow"
-    resources = ["${aws_sns_topic.default.arn}"]
+    resources = [aws_sns_topic.default.arn]
 
     principals {
       type        = "AWS"
@@ -33,7 +35,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
       variable = "AWS:SourceOwner"
 
       values = [
-        "${data.aws_caller_identity.current.account_id}",
+        data.aws_caller_identity.current.account_id,
       ]
     }
   }
@@ -41,7 +43,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
   statement {
     sid       = "Allow CloudwatchEvents"
     actions   = ["sns:Publish"]
-    resources = ["${aws_sns_topic.default.arn}"]
+    resources = [aws_sns_topic.default.arn]
 
     principals {
       type        = "Service"
@@ -52,7 +54,7 @@ data "aws_iam_policy_document" "sns_topic_policy" {
   statement {
     sid       = "Allow RDS Event Notification"
     actions   = ["sns:Publish"]
-    resources = ["${aws_sns_topic.default.arn}"]
+    resources = [aws_sns_topic.default.arn]
 
     principals {
       type        = "Service"
@@ -60,3 +62,4 @@ data "aws_iam_policy_document" "sns_topic_policy" {
     }
   }
 }
+
