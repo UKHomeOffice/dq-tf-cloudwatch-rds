@@ -1,17 +1,17 @@
 locals {
   naming_suffix = "${var.db_instance_id}-${var.naming_suffix}"
-  path_module   = "${var.path_module != "unset" ? var.path_module : path.module}"
+  path_module   = var.path_module != "unset" ? var.path_module : path.module
 
   thresholds = {
-    BurstBalanceThreshold     = "${min(max(var.burst_balance_threshold, 0), 100)}"
-    CPUUtilizationThreshold   = "${min(max(var.cpu_utilization_threshold, 0), 100)}"
-    DiskQueueDepthThreshold   = "${max(var.disk_queue_depth_threshold, 0)}"
-    FreeableMemoryThreshold   = "${max(var.freeable_memory_threshold, 0)}"
-    FreeStorageSpaceThreshold = "${max(var.free_storage_space_threshold, 0)}"
-    SwapUsageThreshold        = "${max(var.swap_usage_threshold, 0)}"
-    DatabaseConnections       = "${max(var.db_connections_threshold, 0)}"
-    WriteLatency              = "${max(var.write_latency_threshold, 0)}"
-    ReadLatency               = "${max(var.read_latency_threshold, 0)}"
+    BurstBalanceThreshold     = min(max(var.burst_balance_threshold, 0), 100)
+    CPUUtilizationThreshold   = min(max(var.cpu_utilization_threshold, 0), 100)
+    DiskQueueDepthThreshold   = max(var.disk_queue_depth_threshold, 0)
+    FreeableMemoryThreshold   = max(var.freeable_memory_threshold, 0)
+    FreeStorageSpaceThreshold = max(var.free_storage_space_threshold, 0)
+    SwapUsageThreshold        = max(var.swap_usage_threshold, 0)
+    DatabaseConnections       = max(var.db_connections_threshold, 0)
+    WriteLatency              = max(var.write_latency_threshold, 0)
+    ReadLatency               = max(var.read_latency_threshold, 0)
   }
 }
 
@@ -23,13 +23,13 @@ resource "aws_cloudwatch_metric_alarm" "burst_balance_too_low" {
   namespace           = "AWS/RDS"
   period              = "600"
   statistic           = "Average"
-  threshold           = "${local.thresholds["BurstBalanceThreshold"]}"
+  threshold           = local.thresholds["BurstBalanceThreshold"]
   alarm_description   = "Average database storage burst balance over last 10 minutes too low, expect a significant performance drop soon"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = [aws_sns_topic.default.arn]
+  ok_actions          = [aws_sns_topic.default.arn]
 
-  dimensions {
-    DBInstanceIdentifier = "${var.db_instance_id}"
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
   }
 }
 
@@ -41,13 +41,13 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization_too_high" {
   namespace           = "AWS/RDS"
   period              = "600"
   statistic           = "Average"
-  threshold           = "${local.thresholds["CPUUtilizationThreshold"]}"
+  threshold           = local.thresholds["CPUUtilizationThreshold"]
   alarm_description   = "Average database CPU utilization over last 10 minutes too high"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = [aws_sns_topic.default.arn]
+  ok_actions          = [aws_sns_topic.default.arn]
 
-  dimensions {
-    DBInstanceIdentifier = "${var.db_instance_id}"
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
   }
 }
 
@@ -59,13 +59,13 @@ resource "aws_cloudwatch_metric_alarm" "disk_queue_depth_too_high" {
   namespace           = "AWS/RDS"
   period              = "600"
   statistic           = "Average"
-  threshold           = "${local.thresholds["DiskQueueDepthThreshold"]}"
+  threshold           = local.thresholds["DiskQueueDepthThreshold"]
   alarm_description   = "Average database disk queue depth over last 10 minutes too high, performance may suffer"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = [aws_sns_topic.default.arn]
+  ok_actions          = [aws_sns_topic.default.arn]
 
-  dimensions {
-    DBInstanceIdentifier = "${var.db_instance_id}"
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
   }
 }
 
@@ -77,13 +77,13 @@ resource "aws_cloudwatch_metric_alarm" "freeable_memory_too_low" {
   namespace           = "AWS/RDS"
   period              = "600"
   statistic           = "Average"
-  threshold           = "${local.thresholds["FreeableMemoryThreshold"]}"
+  threshold           = local.thresholds["FreeableMemoryThreshold"]
   alarm_description   = "Average database freeable memory over last 10 minutes too low, performance may suffer"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = [aws_sns_topic.default.arn]
+  ok_actions          = [aws_sns_topic.default.arn]
 
-  dimensions {
-    DBInstanceIdentifier = "${var.db_instance_id}"
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
   }
 }
 
@@ -95,18 +95,18 @@ resource "aws_cloudwatch_metric_alarm" "free_storage_space_too_low" {
   namespace           = "AWS/RDS"
   period              = "600"
   statistic           = "Average"
-  threshold           = "${local.thresholds["FreeStorageSpaceThreshold"]}"
+  threshold           = local.thresholds["FreeStorageSpaceThreshold"]
   alarm_description   = "Average database free storage space over last 10 minutes too low"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = [aws_sns_topic.default.arn]
+  ok_actions          = [aws_sns_topic.default.arn]
 
-  dimensions {
-    DBInstanceIdentifier = "${var.db_instance_id}"
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "swap_usage_too_high" {
-  count               = "${var.swap_alarm == "true" ? "1" : "0"}"
+  count               = var.swap_alarm == "true" ? "1" : "0"
   alarm_name          = "${var.pipeline_name}-swap-usage-too-high"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
@@ -114,13 +114,13 @@ resource "aws_cloudwatch_metric_alarm" "swap_usage_too_high" {
   namespace           = "AWS/RDS"
   period              = "600"
   statistic           = "Average"
-  threshold           = "${local.thresholds["SwapUsageThreshold"]}"
+  threshold           = local.thresholds["SwapUsageThreshold"]
   alarm_description   = "Average database swap usage over last 10 minutes too high, performance may suffer"
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = [aws_sns_topic.default.arn]
+  ok_actions          = [aws_sns_topic.default.arn]
 
-  dimensions {
-    DBInstanceIdentifier = "${var.db_instance_id}"
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
   }
 }
 
@@ -132,13 +132,13 @@ resource "aws_cloudwatch_metric_alarm" "database_connections_too_high" {
   namespace           = "AWS/RDS"
   period              = "600"
   statistic           = "Average"
-  threshold           = "${local.thresholds["DatabaseConnections"]}"
+  threshold           = local.thresholds["DatabaseConnections"]
   alarm_description   = "Average database connection count over last 10 minutes too high."
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = [aws_sns_topic.default.arn]
+  ok_actions          = [aws_sns_topic.default.arn]
 
-  dimensions {
-    DBInstanceIdentifier = "${var.db_instance_id}"
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
   }
 }
 
@@ -150,13 +150,13 @@ resource "aws_cloudwatch_metric_alarm" "read_latency_too_high" {
   namespace           = "AWS/RDS"
   period              = "600"
   statistic           = "Average"
-  threshold           = "${local.thresholds["ReadLatency"]}"
+  threshold           = local.thresholds["ReadLatency"]
   alarm_description   = "The average amount of time taken per disk I/O operation."
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = [aws_sns_topic.default.arn]
+  ok_actions          = [aws_sns_topic.default.arn]
 
-  dimensions {
-    DBInstanceIdentifier = "${var.db_instance_id}"
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
   }
 }
 
@@ -168,12 +168,13 @@ resource "aws_cloudwatch_metric_alarm" "write_latency_too_high" {
   namespace           = "AWS/RDS"
   period              = "600"
   statistic           = "Average"
-  threshold           = "${local.thresholds["WriteLatency"]}"
+  threshold           = local.thresholds["WriteLatency"]
   alarm_description   = "The average amount of time taken per disk I/O operation."
-  alarm_actions       = ["${aws_sns_topic.default.arn}"]
-  ok_actions          = ["${aws_sns_topic.default.arn}"]
+  alarm_actions       = [aws_sns_topic.default.arn]
+  ok_actions          = [aws_sns_topic.default.arn]
 
-  dimensions {
-    DBInstanceIdentifier = "${var.db_instance_id}"
+  dimensions = {
+    DBInstanceIdentifier = var.db_instance_id
   }
 }
+

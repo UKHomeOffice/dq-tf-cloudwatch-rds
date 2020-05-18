@@ -7,17 +7,17 @@ data "archive_file" "lambda_slack_zip" {
 resource "aws_lambda_permission" "with_sns" {
   statement_id  = "AllowExecutionFromSNS"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.lambda_slack.function_name}"
+  function_name = aws_lambda_function.lambda_slack.function_name
   principal     = "sns.amazonaws.com"
-  source_arn    = "${aws_sns_topic.default.arn}"
+  source_arn    = aws_sns_topic.default.arn
 }
 
 resource "aws_lambda_function" "lambda_slack" {
   filename         = "${path.module}/lambda/slack/package/lambda.zip"
   function_name    = "${var.pipeline_name}-lambda-slack-${var.environment}"
-  role             = "${aws_iam_role.lambda_role_slack.arn}"
+  role             = aws_iam_role.lambda_role_slack.arn
   handler          = "slack.lambda_handler"
-  source_code_hash = "${data.archive_file.lambda_slack_zip.output_base64sha256}"
+  source_code_hash = data.archive_file.lambda_slack_zip.output_base64sha256
   runtime          = "python3.7"
   timeout          = "60"
 
@@ -25,12 +25,12 @@ resource "aws_lambda_function" "lambda_slack" {
     Name = "lambda-slack-${var.pipeline_name}-${var.environment}"
   }
 
-  depends_on = ["aws_iam_role.lambda_role_slack"]
+  depends_on = [aws_iam_role.lambda_role_slack]
 }
 
 resource "aws_iam_role_policy" "lambda_policy_slack" {
   name = "${var.pipeline_name}-lambda-policy-slack-${var.environment}"
-  role = "${aws_iam_role.lambda_role_slack.id}"
+  role = aws_iam_role.lambda_role_slack.id
 
   policy = <<EOF
 {
@@ -49,7 +49,8 @@ resource "aws_iam_role_policy" "lambda_policy_slack" {
 }
 EOF
 
-  depends_on = ["aws_iam_role.lambda_role_slack"]
+
+  depends_on = [aws_iam_role.lambda_role_slack]
 }
 
 resource "aws_iam_role" "lambda_role_slack" {
@@ -68,6 +69,7 @@ resource "aws_iam_role" "lambda_role_slack" {
   ]
 }
 EOF
+
 
   tags = {
     Name = "iam-lambda-slack-${local.naming_suffix}"
@@ -106,9 +108,11 @@ resource "aws_iam_policy" "lambda_logging_policy_slack" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_logging_policy_attachment_slack" {
-  role       = "${aws_iam_role.lambda_role_slack.name}"
-  policy_arn = "${aws_iam_policy.lambda_logging_policy_slack.arn}"
+  role       = aws_iam_role.lambda_role_slack.name
+  policy_arn = aws_iam_policy.lambda_logging_policy_slack.arn
 }
+
