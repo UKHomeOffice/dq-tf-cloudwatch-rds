@@ -26,6 +26,15 @@ resource "aws_lambda_function" "lambda_slack" {
   }
 
   depends_on = [aws_iam_role.lambda_role_slack]
+
+  lifecycle {
+    ignore_changes = [
+      filename,
+      last_modified,
+      source_code_hash,
+    ]
+  }
+
 }
 
 resource "aws_iam_role_policy" "lambda_policy_slack" {
@@ -115,4 +124,3 @@ resource "aws_iam_role_policy_attachment" "lambda_logging_policy_attachment_slac
   role       = aws_iam_role.lambda_role_slack.name
   policy_arn = aws_iam_policy.lambda_logging_policy_slack.arn
 }
-
