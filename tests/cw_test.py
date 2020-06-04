@@ -1,7 +1,6 @@
 # pylint: disable=missing-docstring, line-too-long, protected-access, E1101, C0202, E0602, W0109
 import unittest
 from runner import Runner
-# import json
 
 
 class TestE2E(unittest.TestCase):
@@ -42,9 +41,6 @@ class TestE2E(unittest.TestCase):
         """
         self.runner = Runner(self.snippet)
         self.result = self.runner.result
-
-    # def test_print(self):
-    #     print(json.dumps(self.result, indent=4, sort_keys=True))
 
     def test_rds_alarms_burst_balance_too_low(self):
         self.assertEqual(self.runner.get_value("module.rds_alarms.aws_cloudwatch_metric_alarm.burst_balance_too_low", "threshold"), 20)
@@ -129,6 +125,7 @@ class TestE2E(unittest.TestCase):
 
     def test_sns_subscirption_protocol(self):
         self.assertEqual(self.runner.get_value("module.rds_alarms.aws_sns_topic_subscription.sns_to_lambda", "protocol"), "lambda")
+
 
 if __name__ == '__main__':
     unittest.main()
