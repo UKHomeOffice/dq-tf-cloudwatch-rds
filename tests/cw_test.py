@@ -20,7 +20,7 @@ class TestE2E(unittest.TestCase):
               source = "./mymodule"
 
               providers = {
-                aws = "aws"
+                aws = aws
               }
 
               naming_suffix                = "apps"
