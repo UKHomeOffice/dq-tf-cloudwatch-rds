@@ -11,8 +11,6 @@ class TestE2E(unittest.TestCase):
             provider "aws" {
               region = "eu-west-2"
               skip_credentials_validation = true
-              skip_requesting_account_id = true
-              skip_metadata_api_check = true
             }
 
             module "rds_alarms" {
