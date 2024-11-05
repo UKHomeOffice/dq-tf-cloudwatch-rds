@@ -95,20 +95,20 @@ class TestE2E(unittest.TestCase):
     def test_rds_alarms_read_latency_too_high_name(self):
         self.assertEqual(self.runner.get_value("module.rds_alarms.aws_cloudwatch_metric_alarm.read_latency_too_high", "alarm_name"), "foo-read-latency-too-high")
 
-    #def test_lambda_slack_handler(self):
-    #    self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "handler"), "slack.lambda_handler")
+    def test_lambda_slack_handler(self):
+        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "handler"), "slack.lambda_handler")
 
-    #def test_lambda_slack_runtime(self):
-    #    self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "runtime"), "python3.7")
+    def test_lambda_slack_runtime(self):
+        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "runtime"), "python3.7")
 
-    #def test_lambda_slack_timeout(self):
-    #    self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "timeout"), 60)
+    def test_lambda_slack_timeout(self):
+        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "timeout"), 60)
 
-    #def test_lambda_slack_name(self):
-     #   self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack","tags"), {'Name': 'lambda-slack-foo-notprod'})
+    def test_lambda_slack_name(self):
+       self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack","tags"), {'Name': 'lambda-slack-foo-notprod'})
 
-    #def test_lambda_slack_function_name(self):
-    #    self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "function_name"), "foo-lambda-slack-notprod")
+    def test_lambda_slack_function_name(self):
+        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "function_name"), "foo-lambda-slack-notprod")
 
     def test_lambda_iam_policy_name(self):
         self.assertEqual(self.runner.get_value("module.rds_alarms.aws_iam_role_policy.lambda_policy_slack", "name"), "foo-lambda-policy-slack-notprod")
@@ -116,14 +116,14 @@ class TestE2E(unittest.TestCase):
     def test_lambda_iam_role_tag(self):
         self.assertEqual(self.runner.get_value("module.rds_alarms.aws_iam_role.lambda_role_slack", "tags"), {'Name': 'iam-lambda-slack-1234-apps'})
 
-    #def test_cw_log_groups(self):
-    #    self.assertEqual(self.runner.get_value("module.rds_alarms.aws_cloudwatch_log_group.lambda_log_group_slack", "tags"), {'Name': 'lambda-log-group-slack-1234-apps'})
+    def test_cw_log_groups(self):
+        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_cloudwatch_log_group.lambda_log_group_slack", "tags"), {'Name': 'lambda-log-group-slack-1234-apps'})
 
-    #def test_iam_policy_logging(self):
-    #    self.assertEqual(self.runner.get_value("module.rds_alarms.aws_iam_policy.lambda_logging_policy_slack", "name"), "foo-lambda-logging-policy-slack-notprod")
+    def test_iam_policy_logging(self):
+        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_iam_policy.lambda_logging_policy_slack", "name"), "foo-lambda-logging-policy-slack-notprod")
 
-    #def test_sns_subscirption_protocol(self):
-    #    self.assertEqual(self.runner.get_value("module.rds_alarms.aws_sns_topic_subscription.sns_to_lambda", "protocol"), "lambda")
+    def test_sns_subscirption_protocol(self):
+        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_sns_topic_subscription.sns_to_lambda", "protocol"), "lambda")
 
 
 if __name__ == '__main__':
