@@ -80,7 +80,7 @@ EOF
 
 
   tags = {
-    Name = "iam-lambda-slack-${var.naming_suffix}"
+    Name = "iam-lambda-slack-${local.naming_suffix}"
   }
 }
 
@@ -89,7 +89,7 @@ resource "aws_cloudwatch_log_group" "lambda_log_group_slack" {
   retention_in_days = 14
 
   tags = {
-    Name = "lambda-log-group-slack-${var.naming_suffix}"
+    Name = "lambda-log-group-slack-${local.naming_suffix}"
   }
 }
 
