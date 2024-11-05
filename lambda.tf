@@ -1,7 +1,7 @@
 data "archive_file" "lambda_slack_zip" {
   type        = "zip"
-  source_dir  = "${path_module}/lambda/slack"
-  output_path = "${path_module}/lambda/slack/package/lambda.zip"
+  source_dir  = "${path.module}/lambda/slack"
+  output_path = "${path.module}/lambda/slack/package/lambda.zip"
 }
 
 resource "aws_lambda_permission" "with_sns" {
@@ -80,7 +80,7 @@ EOF
 
 
   tags = {
-    Name = "iam-lambda-slack-${local.naming_suffix}"
+    Name = "iam-lambda-slack-${naming_suffix}"
   }
 }
 
@@ -89,7 +89,7 @@ resource "aws_cloudwatch_log_group" "lambda_log_group_slack" {
   retention_in_days = 14
 
   tags = {
-    Name = "lambda-log-group-slack-${local.naming_suffix}"
+    Name = "lambda-log-group-slack-${naming_suffix}"
   }
 }
 
