@@ -105,7 +105,7 @@ class TestE2E(unittest.TestCase):
         self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "timeout"), 60)
 
     def test_lambda_slack_name(self):
-        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack","tags"), {'Name': 'lambda-slack-foo-notprod'})
+       self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack","tags"), {'Name': 'lambda-slack-foo-notprod'})
 
     def test_lambda_slack_function_name(self):
         self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "function_name"), "foo-lambda-slack-notprod")
