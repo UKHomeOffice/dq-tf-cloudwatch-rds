@@ -99,7 +99,7 @@ class TestE2E(unittest.TestCase):
         self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "handler"), "slack.lambda_handler")
 
     def test_lambda_slack_runtime(self):
-        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "runtime"), "python3.11")
+        self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "runtime"), "python3.7")
 
     def test_lambda_slack_timeout(self):
         self.assertEqual(self.runner.get_value("module.rds_alarms.aws_lambda_function.lambda_slack", "timeout"), 60)
